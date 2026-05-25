@@ -1,0 +1,199 @@
+﻿import urllib.request
+url = 'https://raw.githubusercontent.com/anthropics/anthropic-cookbook/main/misc/placeholder.html'
+print('Creando index.html...')
+
+html = '''<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espacios - Diseno Interior con IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,900&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--dark:#111;--dark2:#1A1A1A;--dark3:#222;--gold:#C9A84C;--gold-light:#E8CC80;--gold-dim:#7A6230;--white:#F5F0E8;--muted:#888070;--border:rgba(201,168,76,0.18);--serif:"Playfair Display",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--black);color:var(--white);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:22px 60px;background:rgba(10,10,10,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:.04em;color:var(--white)}
+.nav-logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-weight:300;transition:color .25s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--gold)!important;color:var(--black)!important;padding:11px 28px;border-radius:1px;font-size:12px!important;font-weight:500!important;letter-spacing:.14em!important;text-transform:uppercase!important}
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 56px 80px 72px;background:var(--black)}
+.hero-eyebrow{font-size:11px;letter-spacing:.28em;font-weight:400;color:var(--gold);text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:14px}
+.hero-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--gold)}
+.hero-title{font-family:var(--serif);font-size:clamp(64px,6.5vw,100px);font-weight:900;line-height:.95;color:var(--white);margin-bottom:36px;letter-spacing:-.02em}
+.hero-title em{font-style:italic;color:var(--gold);display:block}
+.hero-desc{font-size:16px;line-height:1.8;color:var(--muted);max-width:440px;margin-bottom:56px;font-weight:300;border-left:2px solid var(--gold-dim);padding-left:20px}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--black);padding:18px 44px;font-size:13px;letter-spacing:.14em;border:none;cursor:pointer;font-family:var(--sans);font-weight:500;text-transform:uppercase;border-radius:1px;transition:background .2s,transform .15s}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--white);padding:18px 36px;font-size:13px;letter-spacing:.12em;border:1px solid rgba(245,240,232,0.2);cursor:pointer;font-family:var(--sans);font-weight:300;text-transform:uppercase;border-radius:1px;transition:border-color .2s,color .2s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.hero-right{position:relative;overflow:hidden}
+.hero-right img{width:100%;height:100%;object-fit:cover;filter:brightness(.72) contrast(1.05)}
+.hero-right::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.1) 0%,transparent 60%);pointer-events:none}
+.hero-badge{position:absolute;bottom:48px;left:0;z-index:3;background:var(--black);padding:22px 32px;border-left:3px solid var(--gold);animation:slideIn 1s cubic-bezier(.22,1,.36,1) .6s both}
+@keyframes slideIn{from{transform:translateX(-110%);opacity:0}to{transform:translateX(0);opacity:1}}
+.hero-badge p{font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.hero-badge strong{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--gold);display:block;margin-top:4px}
+.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--dark)}
+.stat{padding:40px 56px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:var(--serif);font-size:56px;font-weight:700;color:var(--gold);line-height:1;display:block}
+.stat-label{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;font-weight:300;margin-top:6px;display:block}
+.section-tag{font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;font-weight:400;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.section-tag::before{content:"";display:block;width:24px;height:1px;background:var(--gold)}
+.section-title{font-family:var(--serif);font-size:clamp(52px,5.5vw,80px);font-weight:900;line-height:1;color:var(--white);letter-spacing:-.02em}
+.section-title em{font-style:italic;color:var(--gold)}
+#how{padding:130px 72px;background:var(--dark)}
+.how-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:100px}
+.how-desc{font-size:16px;color:var(--muted);line-height:1.8;font-weight:300;max-width:400px;border-left:1px solid var(--border);padding-left:24px}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.step{background:var(--dark2);padding:52px 44px;position:relative;overflow:hidden;transition:background .4s}
+.step:hover{background:var(--dark3)}
+.step::before{content:attr(data-num);font-family:var(--serif);font-size:130px;font-weight:900;color:rgba(201,168,76,.05);position:absolute;bottom:-20px;right:12px;line-height:1;pointer-events:none}
+.step-icon{width:56px;height:56px;border:1px solid var(--gold-dim);border-radius:1px;display:flex;align-items:center;justify-content:center;margin-bottom:32px;font-size:24px;position:relative;z-index:1}
+.step h3{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--white);margin-bottom:16px;line-height:1.2;position:relative;z-index:1}
+.step p{font-size:14px;color:var(--muted);line-height:1.75;font-weight:300;position:relative;z-index:1}
+#app{padding:130px 72px;background:var(--black)}
+.app-header{margin-bottom:72px}
+.app-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:56px;align-items:start}
+.app-sidebar{position:sticky;top:110px}
+.upload-zone{border:1px dashed var(--gold-dim);border-radius:2px;padding:52px 32px;text-align:center;cursor:pointer;background:var(--dark2);transition:border-color .3s,background .3s}
+.upload-zone:hover{border-color:var(--gold);background:var(--dark3)}
+.upload-zone input{display:none}
+.upload-icon{font-size:44px;margin-bottom:18px;display:block}
+.upload-zone h4{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--white);margin-bottom:8px}
+.upload-zone p{font-size:13px;color:var(--muted);font-weight:300;margin:0}
+#preview-container{display:none;margin-top:16px;position:relative}
+#preview-img{width:100%;border-radius:2px;display:block;max-height:260px;object-fit:cover}
+.preview-remove{position:absolute;top:10px;right:10px;background:rgba(10,10,10,.85);color:var(--gold);border:1px solid var(--gold-dim);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.form-group{margin-top:22px}
+.form-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:400;display:block;margin-bottom:10px}
+.form-select{width:100%;padding:13px 18px;border:1px solid rgba(201,168,76,.25);border-radius:1px;background:var(--dark2);color:var(--white);font-family:var(--sans);font-size:14px;font-weight:300;appearance:none;cursor:pointer;transition:border-color .2s}
+.form-select:focus{outline:none;border-color:var(--gold)}
+.form-select option{background:var(--dark2)}
+.style-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.style-chip{padding:9px 18px;border:1px solid rgba(201,168,76,.25);border-radius:1px;font-size:12px;cursor:pointer;color:var(--muted);background:var(--dark2);transition:all .2s;font-weight:300;font-family:var(--sans);letter-spacing:.06em}
+.style-chip:hover{border-color:var(--gold);color:var(--gold)}
+.style-chip.selected{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:500}
+.analyze-btn{width:100%;margin-top:28px;background:var(--gold);color:var(--black);padding:20px;font-size:13px;letter-spacing:.18em;border:none;cursor:pointer;font-family:var(--sans);font-weight:500;text-transform:uppercase;border-radius:1px;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:12px}
+.analyze-btn:hover:not(:disabled){background:var(--gold-light);transform:translateY(-1px)}
+.analyze-btn:disabled{opacity:.35;cursor:not-allowed}
+#results-panel{background:var(--dark2);border:1px solid var(--border);border-radius:2px;overflow:hidden;min-height:560px;display:flex;flex-direction:column}
+.results-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 40px;text-align:center}
+.results-placeholder .big-icon{font-size:72px;margin-bottom:28px;opacity:.25}
+.results-placeholder h3{font-family:var(--serif);font-size:36px;font-weight:700;color:var(--white);margin-bottom:14px;line-height:1.2}
+.results-placeholder p{font-size:14px;color:var(--muted);max-width:280px;line-height:1.7;font-weight:300}
+#loading-state{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:60px 40px}
+.loader-ring{width:60px;height:60px;border:2px solid var(--dark3);border-top-color:var(--gold);border-radius:50%;animation:spin .85s linear infinite;margin-bottom:28px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--white);text-align:center}
+.loader-sub{font-size:13px;color:var(--muted);margin-top:10px;text-align:center;font-weight:300}
+#results-content{display:none;flex-direction:column;flex:1}
+.results-header{padding:28px 36px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--dark3)}
+.results-header h3{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--white)}
+.results-badge{font-size:10px;letter-spacing:.14em;color:var(--gold);background:rgba(201,168,76,.12);padding:5px 14px;border:1px solid var(--border);border-radius:1px;text-transform:uppercase}
+.results-body{padding:32px 36px;flex:1;overflow-y:auto}
+.result-section{margin-bottom:36px}
+.result-section-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.result-text{font-size:14px;line-height:1.85;color:rgba(245,240,232,.75);font-weight:300}
+.result-text p{margin-bottom:10px}
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.product-card{border:1px solid var(--border);border-radius:2px;padding:18px;background:var(--dark);transition:border-color .2s,transform .15s;cursor:pointer;position:relative;overflow:hidden}
+.product-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.product-card.ikea-card{border-color:rgba(201,168,76,.45)}
+.product-card.ikea-card::before{content:"IKEA";position:absolute;top:0;right:0;background:var(--gold);color:var(--black);font-size:9px;font-weight:700;letter-spacing:.12em;padding:3px 9px}
+.product-store{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:6px}
+.product-name{font-size:13px;font-weight:500;color:var(--white);margin-bottom:4px}
+.product-desc{font-size:12px;color:var(--muted);font-weight:300;line-height:1.5}
+.product-price{font-family:var(--serif);font-size:17px;color:var(--gold);margin-top:10px;font-weight:700}
+.product-link{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.3);padding-bottom:2px;transition:border-color .2s;font-weight:400}
+.product-link:hover{border-color:var(--gold)}
+.palette-row{display:flex;gap:10px;margin-top:12px}
+.swatch-wrap{flex:1}
+.palette-swatch{height:52px;border-radius:2px}
+.palette-label{font-size:10px;color:var(--muted);margin-top:6px;text-align:center;letter-spacing:.06em}
+#testimonials{padding:120px 72px;background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.test-header{margin-bottom:80px}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.testimonial-card{padding:48px 40px;background:var(--dark2);transition:background .3s}
+.testimonial-card:hover{background:var(--dark3)}
+.test-quote-mark{font-family:var(--serif);font-size:88px;font-weight:900;color:var(--gold);line-height:.6;margin-bottom:24px;display:block;opacity:.45}
+.testimonial-quote{font-family:var(--serif);font-size:20px;font-weight:400;font-style:italic;line-height:1.55;color:var(--white);margin-bottom:28px}
+.testimonial-author{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;font-weight:300}
+.testimonial-city{font-size:11px;color:var(--gold);margin-top:4px;letter-spacing:.08em}
+footer{background:var(--black);border-top:1px solid var(--border);padding:52px 72px;display:flex;justify-content:space-between;align-items:center}
+.footer-logo{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--white)}
+.footer-logo span{font-style:italic;color:var(--gold)}
+.footer-links{display:flex;gap:32px}
+.footer-links a{font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;font-weight:300;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:12px;color:var(--gold-dim);letter-spacing:.06em}
+.fade-in{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.fade-in.visible{opacity:1;transform:none}
+.fade-in-left{opacity:0;transform:translateX(-28px);transition:opacity .8s ease,transform .8s ease}
+.fade-in-left.visible{opacity:1;transform:none}
+@media(max-width:960px){nav{padding:16px 28px}.nav-links{display:none}#hero{grid-template-columns:1fr}.hero-right{height:55vw;min-height:280px}.hero-left{padding:64px 32px}#how,#app,#testimonials{padding:90px 32px}.how-header{grid-template-columns:1fr;gap:32px}.steps-grid,.testimonials-grid{grid-template-columns:1fr}.app-grid{grid-template-columns:1fr}.app-sidebar{position:static}.stats-bar{grid-template-columns:1fr}.stat{border-right:none;border-bottom:1px solid var(--border)}footer{flex-direction:column;gap:20px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center}.products-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="nav-logo">Espacio<span>s</span></div><div class="nav-links"><a href="#how">Como funciona</a><a href="#app">Disena ahora</a><a href="#testimonials">Historias</a><a href="#app" class="nav-cta">Comenzar gratis</a></div></nav>
+<section id="hero"><div class="hero-left"><p class="hero-eyebrow">Diseno interior con inteligencia artificial</p><h1 class="hero-title">Tu espacio,<br><em>reimaginado.</em></h1><p class="hero-desc">Sube una foto de tu hogar u oficina. Nuestra IA analiza el espacio, propone la transformacion perfecta y te dice exactamente donde comprar en IKEA.</p><div class="hero-actions"><button class="btn-primary" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Disenar mi espacio</button><button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">Ver como funciona</button></div></div><div class="hero-right"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&q=85" alt="Interior de lujo"><div class="hero-badge"><p>Resultado en</p><strong>&lt; 60 seg</strong></div></div></section>
+<div class="stats-bar"><div class="stat fade-in"><span class="stat-num">4</span><span class="stat-label">Paises con IKEA disponible</span></div><div class="stat fade-in" style="transition-delay:.12s"><span class="stat-num">12K+</span><span class="stat-label">Espacios transformados</span></div><div class="stat fade-in" style="transition-delay:.24s"><span class="stat-num">98%</span><span class="stat-label">Usuarios satisfechos</span></div></div>
+<section id="how"><div class="how-header fade-in"><div><p class="section-tag">El proceso</p><h2 class="section-title">Tres pasos.<br><em>Un espacio nuevo.</em></h2></div><p class="how-desc">Sin contratar disenadores. Sin meses de planificacion. Solo sube tu foto y deja que la IA trabaje.</p></div><div class="steps-grid"><div class="step fade-in" data-num="01"><div class="step-icon">📷</div><h3>Sube tu foto</h3><p>Toma una fotografia de la habitacion que quieres transformar. Sala, dormitorio, cocina — cualquier espacio funciona.</p></div><div class="step fade-in" data-num="02" style="transition-delay:.15s"><div class="step-icon">✦</div><h3>La IA analiza y propone</h3><p>Identificamos estilo, luz y materiales. Generamos una propuesta completa personalizada a tu gusto y presupuesto.</p></div><div class="step fade-in" data-num="03" style="transition-delay:.3s"><div class="step-icon">🛍</div><h3>Compra en IKEA</h3><p>Recibes links directos a productos en IKEA de tu pais. Un clic y estas en la pagina oficial para comprar.</p></div></div></section>
+<section id="app"><div class="app-header fade-in"><p class="section-tag">Pruebalo ahora - Gratis</p><h2 class="section-title">Disena tu <em>espacio</em></h2></div><div class="app-grid"><div class="app-sidebar fade-in-left"><div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"><input type="file" id="file-input" accept="image/*" onchange="handleFile(event)"><span class="upload-icon">🏠</span><h4>Sube tu foto</h4><p>Haz clic o arrastra una imagen aqui<br>JPG - PNG - max 10 MB</p></div><div id="preview-container"><img id="preview-img" alt="Vista previa"><button class="preview-remove" onclick="removeImage()">x</button></div><div class="form-group"><label class="form-label">Tu pais</label><select class="form-select" id="city-select"><option value="">Selecciona tu pais</option><option value="Colombia">Colombia - IKEA disponible</option><option value="Mexico">Mexico - IKEA disponible</option><option value="Chile">Chile - IKEA disponible</option><option value="Peru">Peru - IKEA disponible</option></select></div><div class="form-group"><label class="form-label">Estilo deseado</label><div class="style-chips"><button class="style-chip" onclick="toggleChip(this)">Minimalista</button><button class="style-chip" onclick="toggleChip(this)">Escandinavo</button><button class="style-chip" onclick="toggleChip(this)">Industrial</button><button class="style-chip" onclick="toggleChip(this)">Boho</button><button class="style-chip" onclick="toggleChip(this)">Contemporaneo</button><button class="style-chip" onclick="toggleChip(this)">Japandi</button><button class="style-chip" onclick="toggleChip(this)">Art Deco</button><button class="style-chip" onclick="toggleChip(this)">Rustico</button></div></div><div class="form-group"><label class="form-label">Presupuesto</label><select class="form-select" id="budget-select"><option value="">Selecciona tu presupuesto</option><option value="economico">Economico - hasta 500 USD</option><option value="medio">Medio - 500-2000 USD</option><option value="alto">Alto - 2000-10000 USD</option><option value="premium">Premium - sin limite</option></select></div><button class="analyze-btn" id="analyze-btn" onclick="analyzeSpace()" disabled>Analizar mi espacio</button></div><div id="results-panel"><div class="results-placeholder" id="results-placeholder"><div class="big-icon">🪴</div><h3>Tu transformacion te espera</h3><p>Sube una foto y elige tu pais para ver las recomendaciones con links a IKEA.</p></div><div id="loading-state"><div class="loader-ring"></div><div class="loader-text">Analizando tu espacio</div><div class="loader-sub" id="loader-sub">Identificando elementos...</div></div><div id="results-content"><div class="results-header"><h3>Recomendaciones de diseno</h3><span class="results-badge" id="results-badge">Resultado</span></div><div class="results-body" id="results-body"></div></div></div></div></section>
+<section id="testimonials"><div class="test-header fade-in"><p class="section-tag">Historias reales</p><h2 class="section-title">Lo que dicen<br><em>nuestros usuarios</em></h2></div><div class="testimonials-grid"><div class="testimonial-card fade-in"><span class="test-quote-mark">"</span><p class="testimonial-quote">Nunca imagine que con una foto podria transformar mi sala. Los links a IKEA Colombia me llevaron directo a cada producto.</p><p class="testimonial-author">Valentina Rios</p><p class="testimonial-city">Bogota, Colombia</p></div><div class="testimonial-card fade-in" style="transition-delay:.15s"><span class="test-quote-mark">"</span><p class="testimonial-quote">Espacios me dio ideas increibles y fui directo a IKEA Mexico a comprar. El proceso fue rapidisimo.</p><p class="testimonial-author">Diego Montoya</p><p class="testimonial-city">Ciudad de Mexico, Mexico</p></div><div class="testimonial-card fade-in" style="transition-delay:.3s"><span class="test-quote-mark">"</span><p class="testimonial-quote">Hice clic en el link de IKEA Chile y el producto ya estaba ahi. Sin buscar nada. Increible.</p><p class="testimonial-author">Catalina Fuentes</p><p class="testimonial-city">Santiago, Chile</p></div></div></section>
+<footer><div class="footer-logo">Espacio<span>s</span></div><div class="footer-links"><a href="#">Inicio</a><a href="#how">Proceso</a><a href="#app">Disenar</a><a href="#">Contacto</a></div><p class="footer-copy">2026 Espacios - Todos los derechos reservados</p></footer>
+<script>
+let uploadedImageBase64=null,selectedStyles=[];
+const zone=document.getElementById('upload-zone');
+zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over')});
+zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)processFile(f)});
+function handleFile(e){const f=e.target.files[0];if(f)processFile(f)}
+function processFile(file){const reader=new FileReader();reader.onload=e=>{uploadedImageBase64=e.target.result.split(',')[1];document.getElementById('preview-img').src=e.target.result;document.getElementById('preview-container').style.display='block';zone.style.display='none';checkReady()};reader.readAsDataURL(file)}
+function removeImage(){uploadedImageBase64=null;document.getElementById('preview-container').style.display='none';zone.style.display='block';document.getElementById('file-input').value='';checkReady()}
+function toggleChip(el){el.classList.toggle('selected');selectedStyles=Array.from(document.querySelectorAll('.style-chip.selected')).map(c=>c.textContent);checkReady()}
+function checkReady(){const city=document.getElementById('city-select').value;document.getElementById('analyze-btn').disabled=!(uploadedImageBase64&&city)}
+document.getElementById('city-select').addEventListener('change',checkReady);
+const ikeaSearchBase={'Colombia':'https://www.ikea.com/co/es/search/?q=','Mexico':'https://www.ikea.com/mx/es/search/?q=','Chile':'https://www.ikea.com/cl/es/search/?q=','Peru':'https://www.ikea.com/pe/es/search/?q='};
+async function analyzeSpace(){
+const country=document.getElementById('city-select').value;
+const budget=document.getElementById('budget-select').value;
+const styles=selectedStyles.length>0?selectedStyles.join(', '):'contemporaneo y funcional';
+document.getElementById('results-placeholder').style.display='none';
+document.getElementById('results-content').style.display='none';
+const loadingEl=document.getElementById('loading-state');
+loadingEl.style.display='flex';
+const msgs=['Identificando elementos...','Analizando luz y proporciones...','Generando propuesta...','Buscando productos en IKEA...'];
+let mi=0;
+const interval=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('loader-sub').textContent=msgs[mi]},2400);
+try{
+const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:uploadedImageBase64,country,styles,budget})});
+if(!res.ok){const e=await res.json();throw new Error(e.error||'Error del servidor')}
+const result=await res.json();
+clearInterval(interval);
+renderResults(result,country,styles);
+}catch(err){clearInterval(interval);loadingEl.style.display='none';const ph=document.getElementById('results-placeholder');ph.style.display='flex';ph.querySelector('h3').textContent='Algo salio mal';ph.querySelector('p').textContent=err.message||'Intenta de nuevo con una imagen clara.'}}
+function renderResults(data,country,styles){
+document.getElementById('loading-state').style.display='none';
+document.getElementById('results-badge').textContent=(styles.split(',')[0]||'Diseno')+' - '+country;
+const ikeaBase=ikeaSearchBase[country]||'https://www.ikea.com/search/?q=';
+const productCards=data.productos.map(p=>{const isIkea=p.ikea===true;const term=encodeURIComponent(p.ikea_search||p.producto);const link=isIkea?'<a class="product-link" href="'+ikeaBase+term+'" target="_blank" rel="noopener">Ver en IKEA</a>':'';return '<div class="product-card'+(isIkea?' ikea-card':'')+'"><div class="product-store">'+p.tienda+'</div><div class="product-name">'+p.producto+'</div><div class="product-desc">'+p.descripcion+'</div><div class="product-price">'+p.precio+'</div>'+link+'</div>'}).join('');
+document.getElementById('results-body').innerHTML='<div class="result-section"><p class="result-section-title">Diagnostico del espacio</p><div class="result-text"><p>'+data.diagnostico+'</p><p>'+data.potencial+'</p></div></div><div class="result-section"><p class="result-section-title">Propuesta de diseno</p><div class="result-text"><p>'+data.propuesta+'</p></div></div><div class="result-section"><p class="result-section-title">Paleta de colores</p><div class="palette-row">'+data.colores.map(c=>'<div class="swatch-wrap"><div class="palette-swatch" style="background:'+c.hex+';border:1px solid rgba(201,168,76,0.2);" title="'+c.uso+'"></div><div class="palette-label">'+c.nombre+'</div></div>').join('')+'</div></div><div class="result-section"><p class="result-section-title">Productos recomendados - '+country+'</p><div class="products-grid">'+productCards+'</div></div><div class="result-section"><p class="result-section-title">Consejos clave</p><div class="result-text">'+data.consejos.map(c=>'<p>✦ '+c+'</p>').join('')+'</div></div>';
+const content=document.getElementById('results-content');content.style.cssText='display:flex;flex-direction:column;flex:1;'}
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1});
+document.querySelectorAll('.fade-in,.fade-in-left').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>'''
+
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(html)
+print('index.html OK')
