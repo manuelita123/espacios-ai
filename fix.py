@@ -1,4 +1,6 @@
-export default async function handler(req, res) {
+﻿import os
+
+analyze = """export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   res.setHeader('Access-Control-Allow-Origin', '*');
   const { imageBase64, country, styles, budget } = req.body;
@@ -25,4 +27,8 @@ export default async function handler(req, res) {
     result.ikeaBase = ikeaUrls[country] || 'https://www.ikea.com';
     return res.status(200).json(result);
   } catch(e) { return res.status(500).json({ error: e.message }); }
-}
+}"""
+
+with open('api/analyze.js', 'w', encoding='utf-8') as f:
+    f.write(analyze)
+print('analyze.js actualizado OK')
