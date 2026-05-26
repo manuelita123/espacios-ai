@@ -2,6 +2,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   res.setHeader('Access-Control-Allow-Origin', '*');
   const { imageBase64, country, styles, budget } = req.body;
+  if (!imageBase64) return res.status(400).json({ error: 'No image provided' });
+  if (imageBase64.length > 500000) return res.status(413).json({ error: 'Image too large. Please use a smaller photo.' });
   const ikeaUrls = { 'Colombia':'https://www.ikea.com/co/es','Mexico':'https://www.ikea.com/mx/es','Chile':'https://www.ikea.com/cl/es','Peru':'https://www.ikea.com/pe/es' };
   const storeMap = { 'Colombia':'IKEA Colombia, Homecenter, Falabella','Mexico':'IKEA Mexico, Liverpool','Chile':'IKEA Chile, Falabella, Sodimac','Peru':'IKEA Peru, Falabella, Sodimac' };
   const budgetText = { economico:'hasta 500 USD',medio:'500-2000 USD',alto:'2000-10000 USD',premium:'sin limite' }[budget] || 'moderado';
