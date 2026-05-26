@@ -1,4 +1,4 @@
-export const config = { api: { bodyParser: { sizeLimit: '50mb' } } };
+﻿analyze_code = """export const config = { api: { bodyParser: { sizeLimit: '50mb' } } };
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method !== 'POST') return res.status(405).json({ error: 'not allowed' });
@@ -18,4 +18,8 @@ export default async function handler(req, res) {
     result.ikeaBase = 'https://www.ikea.com/co/es';
     return res.status(200).json(result);
   } catch(e) { return res.status(500).json({ error: e.message }); }
-}
+}"""
+
+with open('api/analyze.js', 'w', encoding='utf-8') as f:
+    f.write(analyze_code)
+print('OK')
