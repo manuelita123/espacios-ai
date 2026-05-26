@@ -1,1 +1,1 @@
-{"name": "espacios-ai", "version": "1.0.0", "private": true}
+{"name": "espacios-ai", "version": "1.0.0", "private": true, "engines": {"node": "18.x"}}
